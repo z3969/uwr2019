@@ -2,6 +2,7 @@ package core.generator;
 import core.common.*;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,6 +69,15 @@ public class TestTemplateProcessor implements DataSourceType{
         //
         // 这里写代码
         //
+        ConstDataSource source=new ConstDataSource();
+        DataSourceConfig dsc = EasyMock.createMock(DataSourceConfig.class);
+        TemplateProcessor professor=new TemplateProcessor();
+        EasyMock.expect(dsc.getConstDataSource()).andReturn( source);
+        EasyMock.expect(dsc.getConstDataSource()).andStubReturn(null);
+
+        //静态方法录制
+        PowerMock.mockStatic(DataSourceConfig.class);
+        EasyMock.expect(DataSourceConfig.newInstance()).andReturn(dsc);
         //------------------------------------------------
 		//5. 重放所有的行为。
 		PowerMock.replayAll(dsc);
